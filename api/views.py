@@ -6,6 +6,9 @@ from rest_framework import status
 from app.models import *
 from api.serializers import *
 # Create your views here.
+class Index(APIView):
+    def get(self,request):
+        return Response({'advocates':SITE_URL+'/advocates','comapnies':SITE_URL+'/companies'})
 
 class AdvocatesList(APIView):
     def get(self,request):
