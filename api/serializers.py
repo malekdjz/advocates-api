@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer,SerializerMethodField
 from app.models import *
 from django.conf import settings
 
-from core.settings import MEDIA_URL, SITE_URL
+from django.conf.settings import MEDIA_URL, SITE_URL
 
 
 class AdvocateLinkSerializer(ModelSerializer):
