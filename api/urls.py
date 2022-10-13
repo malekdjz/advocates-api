@@ -3,6 +3,7 @@ from api import views
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
+    path('',views.Index.as_view(),name='index'),
     path('advocates/',views.AdvocatesList.as_view(),name='advocates_list'),
     path('advocates/<str:id>',views.AdvocatesDetail.as_view(),name='advocates_detail'),
     path('companies/',views.CompaniesList.as_view(),name='companies_list'),
