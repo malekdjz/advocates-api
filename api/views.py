@@ -5,6 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from app.models import *
 from api.serializers import *
+from django.core import SITE_URL
 # Create your views here.
 class Index(APIView):
     def get(self,request):
