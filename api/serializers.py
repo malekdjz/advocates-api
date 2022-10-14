@@ -27,7 +27,7 @@ class CompanyForAdvocateSerializer(ModelSerializer):
     
     class Meta:
         model = Company
-        fields = ['id','name','logo','url','summary','links']
+        fields = ['id','url','name','logo','summary']
 
 class AdvocateForCompanySerializer(ModelSerializer):
     url = SerializerMethodField()
@@ -41,7 +41,7 @@ class AdvocateForCompanySerializer(ModelSerializer):
     
     class Meta:
         model = Advocate
-        fields = ['id','name','profile_pic','url','short_bio']
+        fields = ['id','url','name','profile_pic','short_bio']
         
 ######################################################################################
 
@@ -59,17 +59,21 @@ class AdvocateSerializer(ModelSerializer):
     
     class Meta:
         model = Advocate
-        fields = ['id','name','profile_pic','url','short_bio','long_bio','advocate_since','company','links']
+        fields = ['id','url','name','profile_pic','short_bio','long_bio','advocate_since','links','company']
 
 class CompanySerializer(ModelSerializer):
     links = CompanyLinkSerializer(many=True,read_only=True)
     advocates = AdvocateForCompanySerializer(many=True,read_only=True)
     logo = SerializerMethodField()
+    url = SerializerMethodField()
+
+    def get_url(self,obj):
+        return SITE_URL+'/companies/'+str(obj.id)
 
     def get_logo(self,obj):
         return SITE_URL + MEDIA_URL + str(obj.logo)
     class Meta:
         model = Company
-        fields = ['id','name','logo','summary','links','advocates']
+        fields = ['id','url','name','logo','summary','links','advocates']
 
 

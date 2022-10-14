@@ -9,7 +9,11 @@ from core.settings import SITE_URL
 # Create your views here.
 class Index(APIView):
     def get(self,request):
-        return Response({'advocates':SITE_URL+'/advocates','comapnies':SITE_URL+'/companies'})
+        return Response({
+            'advocates':SITE_URL+'/advocates',
+            'comapnies':SITE_URL+'/companies',
+            'parameters':'possible get parameters are: page | limit (20 by default)| query'
+            })
 
 class AdvocatesList(APIView):
     def get(self,request):
@@ -17,7 +21,7 @@ class AdvocatesList(APIView):
         query = params.get('query','')
         limit = params.get('limit','')
 
-        queryset = Advocate.objects.filter(name__contains=query)
+        queryset = Advocate.objects.filter(name__icontains=query)
         paginate = PageNumberPagination()
         try:
             limit = int(limit)
@@ -46,7 +50,7 @@ class CompaniesList(APIView):
         params = request.GET
         query = params.get('query','')
         limit = params.get('query','')
-        queryset = Company.objects.filter(name__contains=query)
+        queryset = Company.objects.filter(name__icontains=query)
         paginate = PageNumberPagination()
         try:
             int(limit)
