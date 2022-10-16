@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer,SerializerMethodField
+from rest_framework.serializers import ModelSerializer,SerializerMethodField,HyperlinkedIdentityField
 from app.models import *
 
 
@@ -15,36 +15,14 @@ class CompanyLinkSerializer(ModelSerializer):
 ######################################################################################
 
 class CompanyForAdvocateSerializer(ModelSerializer):
-    url = SerializerMethodField()
-    logo = SerializerMethodField()
-
-    def get_logo(self,obj):
-        request = self.context.get('request')
-        url = obj.logo.url
-        return request.build_absolute_uri(url)
-
-    def get_url(self,obj):
-        request = self.context.get('request')
-        id = obj.id
-        return request.build_absolute_uri(id)
+    url = HyperlinkedIdentityField(view_name='company-detail')
     
     class Meta:
         model = Company
         fields = ['id','url','name','logo','summary']
 
 class AdvocateForCompanySerializer(ModelSerializer):
-    url = SerializerMethodField()
-    profile_pic = SerializerMethodField()
-
-    def get_profile_pic(self,obj):
-        request = self.context.get('request')
-        url = obj.profile_pic.url
-        return request.build_absolute_uri(url)
-
-    def get_url(self,obj):
-        request = self.context.get('request')
-        id = obj.id
-        return request.build_absolute_uri(id)
+    url = HyperlinkedIdentityField(view_name='advocate-detail')
     
     class Meta:
         model = Advocate
@@ -53,20 +31,9 @@ class AdvocateForCompanySerializer(ModelSerializer):
 ######################################################################################
 
 class AdvocateSerializer(ModelSerializer):
-    url = SerializerMethodField()
-    profile_pic = SerializerMethodField()
+    url = HyperlinkedIdentityField(view_name='advocate-detail')
     company = CompanyForAdvocateSerializer(read_only=True)
     links = AdvocateLinkSerializer(many=True,read_only=True)
-
-    def get_profile_pic(self,obj):
-        request = self.context.get('request')
-        url = obj.profile_pic.url
-        return request.build_absolute_uri(url)
-
-    def get_url(self,obj):
-        request = self.context.get('request')
-        id = obj.id
-        return request.build_absolute_uri(id)
     
     class Meta:
         model = Advocate
@@ -75,18 +42,8 @@ class AdvocateSerializer(ModelSerializer):
 class CompanySerializer(ModelSerializer):
     links = CompanyLinkSerializer(many=True,read_only=True)
     advocates = AdvocateForCompanySerializer(many=True,read_only=True)
-    logo = SerializerMethodField()
-    url = SerializerMethodField()
+    url = HyperlinkedIdentityField(view_name='company-detail')
 
-    def get_url(self,obj):
-        request = self.context.get('request')
-        id = obj.id
-        return request.build_absolute_uri(id)
-
-    def get_logo(self,obj):
-        request = self.context.get('request')
-        url = obj.logo.url
-        return request.build_absolute_uri(url)
     class Meta:
         model = Company
         fields = ['id','url','name','logo','summary','links','advocates']

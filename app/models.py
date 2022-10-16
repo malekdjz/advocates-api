@@ -37,4 +37,4 @@ class CompanyLink(models.Model):
     company = models.ForeignKey(Company,related_name='links',on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.compamy.name + '-' +self.name
+        return self.company.name + '-' +self.name

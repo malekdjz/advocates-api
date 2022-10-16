@@ -34,9 +34,9 @@ class AdvocatesList(APIView):
         return response
 
 class AdvocatesDetail(APIView):
-    def get(self,request,id):
+    def get(self,request,pk):
         try:
-            advocate = Advocate.objects.get(id=id)
+            advocate = Advocate.objects.get(id=pk)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = AdvocateSerializer(advocate,context={'request':request})
@@ -63,9 +63,9 @@ class CompaniesList(APIView):
         return response
 
 class ComapniesDetail(APIView):
-    def get(self,request,id):
+    def get(self,request,pk):
         try:
-            company = Company.objects.get(id=id)
+            company = Company.objects.get(id=pk)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = CompanySerializer(company,context={'request':request})
