@@ -1,6 +1,5 @@
 from rest_framework.serializers import ModelSerializer,SerializerMethodField
 from app.models import *
-from core.settings import MEDIA_URL, SITE_URL
 
 
 class AdvocateLinkSerializer(ModelSerializer):
@@ -20,10 +19,14 @@ class CompanyForAdvocateSerializer(ModelSerializer):
     logo = SerializerMethodField()
 
     def get_logo(self,obj):
-        return SITE_URL + MEDIA_URL + str(obj.logo)
+        request = self.context.get('request')
+        url = obj.logo.url
+        return request.build_absolute_uri(url)
 
     def get_url(self,obj):
-        return SITE_URL+'/companies/'+str(obj.id)
+        request = self.context.get('request')
+        id = obj.id
+        return request.build_absolute_uri(id)
     
     class Meta:
         model = Company
@@ -34,10 +37,14 @@ class AdvocateForCompanySerializer(ModelSerializer):
     profile_pic = SerializerMethodField()
 
     def get_profile_pic(self,obj):
-        return SITE_URL + MEDIA_URL + str(obj.profile_pic)
+        request = self.context.get('request')
+        url = obj.profile_pic.url
+        return request.build_absolute_uri(url)
 
     def get_url(self,obj):
-        return SITE_URL+'/advocates/'+str(obj.id)
+        request = self.context.get('request')
+        id = obj.id
+        return request.build_absolute_uri(id)
     
     class Meta:
         model = Advocate
@@ -52,10 +59,14 @@ class AdvocateSerializer(ModelSerializer):
     links = AdvocateLinkSerializer(many=True,read_only=True)
 
     def get_profile_pic(self,obj):
-        return SITE_URL + MEDIA_URL + str(obj.profile_pic)
+        request = self.context.get('request')
+        url = obj.profile_pic.url
+        return request.build_absolute_uri(url)
 
     def get_url(self,obj):
-        return SITE_URL+'/advocates/'+str(obj.id)
+        request = self.context.get('request')
+        id = obj.id
+        return request.build_absolute_uri(id)
     
     class Meta:
         model = Advocate
@@ -68,10 +79,14 @@ class CompanySerializer(ModelSerializer):
     url = SerializerMethodField()
 
     def get_url(self,obj):
-        return SITE_URL+'/companies/'+str(obj.id)
+        request = self.context.get('request')
+        id = obj.id
+        return request.build_absolute_uri(id)
 
     def get_logo(self,obj):
-        return SITE_URL + MEDIA_URL + str(obj.logo)
+        request = self.context.get('request')
+        url = obj.logo.url
+        return request.build_absolute_uri(url)
     class Meta:
         model = Company
         fields = ['id','url','name','logo','summary','links','advocates']

@@ -1,17 +1,15 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from app.models import *
 from api.serializers import *
-from core.settings import SITE_URL
 # Create your views here.
 class Index(APIView):
     def get(self,request):
         return Response({
-            'advocates':SITE_URL+'/advocates',
-            'comapnies':SITE_URL+'/companies',
+            'advocates':request.build_absolute_uri('/advocates'),
+            'comapnies':request.build_absolute_uri('/companies'),
             'parameters':'possible get parameters are: page | limit (20 by default)| query'
             })
 
@@ -30,7 +28,7 @@ class AdvocatesList(APIView):
         else:
             paginate.page_size = abs(limit)
         results = paginate.paginate_queryset(queryset=queryset,request=request)
-        serializer = AdvocateSerializer(results,many=True)
+        serializer = AdvocateSerializer(results,many=True,context={'request':request})
         response = paginate.get_paginated_response(data=serializer.data)
 
         return response
@@ -41,7 +39,7 @@ class AdvocatesDetail(APIView):
             advocate = Advocate.objects.get(id=id)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = AdvocateSerializer(advocate)
+        serializer = AdvocateSerializer(advocate,context={'request':request})
         return Response(serializer.data)
 
 
@@ -59,7 +57,7 @@ class CompaniesList(APIView):
         else:
             paginate.page_size = limit
         results = paginate.paginate_queryset(queryset=queryset,request=request)
-        serializer = CompanySerializer(results,many=True)
+        serializer = CompanySerializer(results,many=True,context={'request':request})
         response = paginate.get_paginated_response(data=serializer.data)
 
         return response
@@ -70,5 +68,5 @@ class ComapniesDetail(APIView):
             company = Company.objects.get(id=id)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = CompanySerializer(company)
+        serializer = CompanySerializer(company,context={'request':request})
         return Response(serializer.data)

@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-blablalba'
+SECRET_KEY = 'django-insecure-*h8tr=&qi-r56m&d*-sqso*fjal-5qzrl!rid20%1fyq0!-h7@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -132,7 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS: True
 
-SITE_URL = 'http://127.0.0.1:8000'
+
 MEDIA_URL = '/images/'
 MEDIA_ROOT = BASE_DIR / 'images/'
 
